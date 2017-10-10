@@ -1,58 +1,27 @@
 #include <stdio.h>
-
-void preencher(int n, int* seq);
-void preencher2(int n, int* seq);
-void calcular(int n, int* seq1, int* seq2, int* seq3);
+#define n 8
 int main(void){
-	int n;
-	printf("Digite a quantidade de números:\n");
-	scanf("%d", &n);
 
-	int seq1[n]; 
-	int seq2[n];
-	int seq3[n+1];
-	printf("Sequência 1:\n");
-	preencher(n, seq1);
+	int seq1[n]={8,2,4,3,4,2,5,1};
+	int seq2[n]={3,3,7,5,2,3,3,7};
+	int seq3[n+1]={0,0,0,0,0,0,0,0,0};
 
-	printf("Sequência 2:\n");
-	preencher(n, seq2);
-
-	preencher2(n, seq3);
-	calcular(n+1, seq1, seq2, seq3);
-
-	for (int i = 0; i < n+1; i++){
-		if (i != n){
-			printf("%d", seq3[i]);	
-		}else{
-			printf("%d\n", seq3[i]);
-		}
-		
-	}
-
-	return 0;
-}
-
-void preencher(int n, int* seq){
-	for(int i=0; i < n;i++){
-		printf("Digite o valor %d da sequência:\n", i+1);
-		scanf("%d", &seq[i]);
-	}
-}
-void preencher2(int n, int* seq){
-	for(int i=0; i < n;i++){
-		seq[i] = 0;
-	}
-}
-
-void calcular(int n, int* seq1, int* seq2, int* seq3){
-	for(int i=n-1; i >= 0; i--){
-		int soma = seq1[i]+seq2[i];
+	int i;
+	for (i = n-1; i >= 0; i--){
+		int soma = seq1[i] + seq2[i];
+		int flag = 0;
 		if (soma > 10){
-			seq3[i+1] += soma%10;
-			seq3[i] += soma/10; 
+			seq3[i+1] = seq3[i+1] + soma-10;
+			flag = 1;
+			seq3[i] = flag;
 		}else{
-			seq3[i+1] = soma;
+			seq3[i+1] = seq3[i+1] + soma;
+			flag = 0;
 		}
 	}
-
+	for (i = 0; i < n+1; i++){
+		printf("%d", seq3[i]);
+	}
+	printf("\n");
+	return 0;
 }
