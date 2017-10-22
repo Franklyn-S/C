@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Aluno.h"
+
+
 struct aluno{
 	int matricula;
 	char nome[51];
@@ -8,6 +10,9 @@ struct aluno{
 }
 
 Aluno *novo_a(int matricula, char *nome, char *curso){
+	if (matricula < 0){
+		return NULL;
+	}
 	Aluno* a = (Aluno*)malloc(sizeof(Aluno));
 	if (a == NULL){
 		printf("Memória insuficiente!\n");
