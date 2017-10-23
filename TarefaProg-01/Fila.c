@@ -4,6 +4,12 @@
 #include "Fila.h"
 
 
+struct fila{
+	int tamanho;
+	int head;
+	int tail;
+	Aluno **aluno;
+};
 
 Fila *nova_f(int tamanho){
 	if (tamanho < 1){
