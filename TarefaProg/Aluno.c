@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "Aluno.h"
 
 
@@ -7,9 +8,9 @@ struct aluno{
 	int matricula;
 	char nome[51];
 	char curso[31];
-}
+};
 
-Aluno *novo_a(int matricula, char *nome, char *curso){
+Aluno* novo_a(int matricula, char *nome, char *curso){
 	if (matricula < 0){
 		return NULL;
 	}
@@ -19,43 +20,39 @@ Aluno *novo_a(int matricula, char *nome, char *curso){
 		exit(1);
 	}
 	a->matricula = matricula;
-	int i;
-	for (int i = 0; nome[i] != "\0"; i++)
-		a->nome[i] = nome[i];
-	a->nome[i] = "\0";
-
-	for (int i = 0; curso[i] != "\0"; i++)
-		a->curso[i] = curso[i];
-	a->curso[i] = "\0"
+	strcpy(a->nome,nome);
+	strcpy(a->curso, curso);
 	return a;
 }
 
 void libera_a(Aluno *aluno){
-	fre(aluno);
+	if (aluno == NULL){
+		return NULL;
+	}
+	free(aluno);
+	aluno = NULL;
 }
 
 void acessa_a(Aluno *aluno, int *matricula, char *nome, char *curso){
 	*matricula = aluno->matricula;
-	for (int i = 0; aluno->nome[i] != "\0"; i++)
-		nome[i] = aluno->nome[i];
-	nome[i] = "\0";
-
-	for (int i = 0; aluno->curso[i] != "\0"; i++)
-		curso[i] = aluno->curso[i];
-	curso[i] = "\0";
+	int i;
+	strcpy(nome, aluno->nome);
+	strcpy(curso, aluno->curso);
 }
 
 void atribui_a(Aluno *aluno, int matricula, char *nome, char *curso){
-	aluno->matricula = matricula;
-	for(int i = 0; nome[i] != "\0"; i++)
-		aluno->nome[i] = nome[i];
-	aluno->nome[i] = "\0";
-
-	for(int i = 0; curso[i] != "\0"; i++)
-		aluno->curso[i] = curso[i];
-	aluno->curso[i] = "\0";
+	if (nome == NULL || curso == NULL){
+		printf("Dados inválidos!\n");
+		return;
+	}
+	if (strlen(nome) > 51 && strlen(curso) > 31){
+		aluno->matricula = matricula;
+		strcpy(aluno->nome,nome);
+		strcpy(aluno->curso, curso);
+	}
+	
 }
 
 int tamanho_a(){
-	return sizeof(Aluno);
+	return (int) sizeof(Aluno);
 }

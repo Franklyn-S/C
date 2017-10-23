@@ -14,5 +14,3 @@ caso contrário */
 Aluno *busca_f(Fila *fila, int matricula);
 /* Retorna 1 se a fila estiver cheia e 0 caso contrário */
 int cheia_f(Fila *fila);
-/* Retorna 1 se a fila estiver vazia e 0 caso contrário */
-int vazia_f(Fila *fila);
