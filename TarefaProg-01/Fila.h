@@ -1,5 +1,11 @@
 #include "Aluno.h"
 /* TAD: Fila (tamanho)*/
+struct fila{
+	int tamanho;
+	int head;
+	int tail;
+	Aluno **aluno;
+};
 typedef struct fila Fila;
 /* Aloca e retorna uma fila de tamanho informado */
 Fila *nova_f(int tamanho);

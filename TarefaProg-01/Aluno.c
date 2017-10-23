@@ -6,9 +6,9 @@
 
 struct aluno{
 	int matricula;
-	char nome[51];
-	char curso[31];
-};
+	char nome[50];
+	char curso[30];
+}Aluno;
 
 Aluno* novo_a(int matricula, char *nome, char *curso){
 	if (nome == NULL || curso == NULL){
@@ -29,9 +29,6 @@ Aluno* novo_a(int matricula, char *nome, char *curso){
 }
 
 void libera_a(Aluno *aluno){
-	if (aluno == NULL){
-		return NULL;
-	}
 	free(aluno);
 	aluno = NULL;
 }
