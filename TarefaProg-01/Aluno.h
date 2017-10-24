@@ -1,4 +1,8 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 /* TAD: Aluno (matricula, nome, curso) */
+
 typedef struct aluno Aluno;
 //Funções exportadas
 /* Aloca e retorna um aluno com os dados passados por parâmetro */

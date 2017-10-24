@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "Aluno.h"
 /* TAD: Fila (tamanho)*/
 typedef struct fila Fila;

@@ -3,12 +3,11 @@
 #include <string.h>
 #include "Aluno.h"
 
-
 struct aluno{
 	int matricula;
 	char nome[50];
 	char curso[30];
-}Aluno;
+};
 
 Aluno* novo_a(int matricula, char *nome, char *curso){
 	if (nome == NULL || curso == NULL){
@@ -17,10 +16,9 @@ Aluno* novo_a(int matricula, char *nome, char *curso){
 	if (matricula < 0){
 		return NULL;
 	}
-	Aluno* a = (Aluno*)malloc(sizeof(Aluno));
+	Aluno* a = (Aluno*)malloc(sizeof(struct aluno));
 	if (a == NULL){
-		printf("Memória insuficiente!\n");
-		exit(1);
+		return NULL;
 	}
 	a->matricula = matricula;
 	strcpy(a->nome,nome);
@@ -29,22 +27,29 @@ Aluno* novo_a(int matricula, char *nome, char *curso){
 }
 
 void libera_a(Aluno *aluno){
-	free(aluno);
-	aluno = NULL;
+	if (aluno != NULL){
+		Aluno alunoNulo;
+		*aluno = alunoNulo;
+		free(aluno);
+		aluno = NULL;
+	}
 }
 
 void acessa_a(Aluno *aluno, int *matricula, char *nome, char *curso){
+	if (nome == NULL || curso == NULL){
+		return;
+	}
 	*matricula = aluno->matricula;
 	strcpy(nome, aluno->nome);
 	strcpy(curso, aluno->curso);
+	
 }
 
 void atribui_a(Aluno *aluno, int matricula, char *nome, char *curso){
 	if (nome == NULL || curso == NULL){
-		//printf("Dados inválidos!\n");
 		return;
 	}
-	if (strlen(nome) > 51 && strlen(curso) > 31){
+	if (strlen(nome) < 51 && strlen(curso) < 31){
 		aluno->matricula = matricula;
 		strcpy(aluno->nome,nome);
 		strcpy(aluno->curso, curso);
@@ -53,5 +58,5 @@ void atribui_a(Aluno *aluno, int matricula, char *nome, char *curso){
 }
 
 int tamanho_a(){
-	return (int) sizeof(Aluno);
+	return sizeof(struct aluno);
 }
