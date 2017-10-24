@@ -5,6 +5,7 @@
 
 struct fila{
 	int tamanho;
+	int head;
 	int tail;
 	Aluno **alunos;
 };
@@ -19,7 +20,7 @@ Fila *nova_f(int tamanho){
 	}
 	f->alunos = malloc(tamanho*sizeof(Aluno*));
 	f->tamanho = tamanho;
-	f->tail = 0;
+	f->head = f->tail = 0;
 	return f;
 }
 
@@ -29,7 +30,10 @@ void destroi_f(Fila *fila){
 		for (i = 0; i < fila->tail; i++){
 			libera_a(fila->alunos[i]);
 		}
+		Fila f;
+		*fila = f;
 		free(fila);	
+		fila = NULL;
 	}
 	
 }
@@ -55,14 +59,10 @@ int retira_f(Fila *fila){
 	if (fila == NULL){
 		return 0;
 	}
-	if (fila->tail = 0){
+	if (fila->tail = 0 || fila->head == fila->tail || fila->head > fila->tamanho){
 		return 0;
 	}
-	int i;
-	for (i = 0; i < fila->tail; i++){
-		fila->alunos[i] = fila->alunos[i+1];
-	}
-	fila->tail--;
+	fila->head++;
 	return 1;
 }
 
