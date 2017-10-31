@@ -25,7 +25,6 @@ Aluno* novo_a(int matricula, char *nome, char *curso){
 	strcpy(a->nome,nome);
 	strcpy(a->curso, curso);
 	a->prox = NULL;
-	a->ant = NULL;
 	return a;
 }
 

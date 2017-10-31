@@ -5,8 +5,7 @@
 
 struct fila{
 	int tamanho;
-	Aluno **alunos;
-	Aluno *cabeça;
+	Aluno *cabeca;
 	Aluno *rabo;
 };
 
@@ -18,20 +17,20 @@ Fila *nova_f(int tamanho){
 	if (f == NULL){
 		return NULL;
 	}
-	f->alunos = malloc(tamanho*sizeof(Aluno*));
 	f->tamanho = tamanho;
-	f->cabeça = NULL;
+	f->cabeca = NULL;
+	f->rabo = f->cabeca;
 	return f;
 }
 
 void destroi_f(Fila *fila){
 	if (fila != NULL){
-		int i;
-		for (i = 0; i < tamanho(fila); i++){
-			libera_a(fila->alunos[i]);
-		}
 		Fila f;
 		*fila = f;
+		fila->cabeca = NULL;
+		fila->rabo = NULL;
+		free(fila->cabeca);
+		free(fila->rabo);
 		free(fila);	
 		fila = NULL;
 	}
@@ -45,11 +44,11 @@ int adiciona_f(Fila *fila, Aluno *aluno){
 	if (cheia_f(fila)){
 		return 0;
 	}
-	if (fila->cabeça = NULL){
-		fila->cabeça = aluno;
+	if (fila->cabeca = NULL){
+		fila->cabeca = aluno;
 		fila->rabo = aluno;
 	}else{
-		atribui_proximo_a(fila->rabo, aluno)
+		atribui_proximo_a(fila->rabo, aluno);
 		
 	}
 	fila->rabo = aluno;
@@ -61,11 +60,11 @@ int retira_f(Fila *fila){
 	if (fila == NULL){
 		return 0;
 	}
-	if (fila->cabeça == NULL){
+	if (fila->cabeca == NULL){
 		return 0;
 	}
-	Aluno prox = acessa_proximo_a(fila->cabeça);
-	fila->cabeça = prox;
+	Aluno *prox = acessa_proximo_a(fila->cabeca);
+	fila->cabeca = prox;
 	return 1;
 }
 
@@ -73,13 +72,15 @@ Aluno *busca_f(Fila *fila, int matricula){
 	if(fila == NULL || matricula < 0){
 		return NULL;
 	}
-	int matriculaAux;
+	int* matriculaAux;
 	char nome[50];
 	char curso[30];
 	int i;
-	Aluno x = fila->cabeça;
-	while (x != NULL && x->matricula != matricula){
+	Aluno *x = fila->cabeca;
+	acessa_a(x, matriculaAux, nome, curso);
+	while (x != NULL && *matriculaAux != matricula){
 		x = acessa_proximo_a(x);
+		acessa_a(x, matriculaAux, nome, curso);
 	}
 	return x;
 }
@@ -88,15 +89,18 @@ int cheia_f(Fila *fila){
 	if (fila == NULL){
 		return 0;
 	}
-	cont = tamanho(fila);
+	int cont = quantidade(fila);
 	if (cont >= fila->tamanho){
 		return 1;
 	} 
 	return 0;
 }
-int tamanho(Fila *fila){
+int quantidade(Fila *fila){
+	if (fila == NULL){
+		return 0;
+	}
 	int cont = 0;
-	Aluno x = fila->cabeça;
+	Aluno *x = fila->cabeca;
 	while(x != NULL){
 		cont++;
 		x = acessa_proximo_a(x);
