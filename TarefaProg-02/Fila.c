@@ -5,10 +5,9 @@
 
 struct fila{
 	int tamanho;
-	int head;
-	int tail;
 	Aluno **alunos;
 	Aluno *cabeça;
+	Aluno *rabo;
 };
 
 Fila *nova_f(int tamanho){
@@ -21,14 +20,14 @@ Fila *nova_f(int tamanho){
 	}
 	f->alunos = malloc(tamanho*sizeof(Aluno*));
 	f->tamanho = tamanho;
-	f->head = f->tail = 0;
+	f->cabeça = NULL;
 	return f;
 }
 
 void destroi_f(Fila *fila){
 	if (fila != NULL){
 		int i;
-		for (i = 0; i < fila->tail; i++){
+		for (i = 0; i < tamanho(fila); i++){
 			libera_a(fila->alunos[i]);
 		}
 		Fila f;
@@ -46,15 +45,14 @@ int adiciona_f(Fila *fila, Aluno *aluno){
 	if (cheia_f(fila)){
 		return 0;
 	}
-	aluno->prox = fila->cabeça;
-	if (fila->cabeça != NULL){
-
+	if (fila->cabeça = NULL){
+		fila->cabeça = aluno;
+		fila->rabo = aluno;
+	}else{
+		atribui_proximo_a(fila->rabo, aluno)
+		
 	}
-	filxzxz;;:...,ç~,.;.;~;er~ty~]t]fdbfba->alunos[fila->tail++] = aluno;
-	/*int indice = (fila->head + fila->tail) % fila->tamanho;
-	fila->aluno[fila->tail] = aluno;
-	fila->tail++;
-	*/
+	fila->rabo = aluno;
 	return 1;
 
 }
@@ -63,10 +61,11 @@ int retira_f(Fila *fila){
 	if (fila == NULL){
 		return 0;
 	}
-	if (fila->tail = 0 || fila->head == fila->tail || fila->head > fila->tamanho){
+	if (fila->cabeça == NULL){
 		return 0;
 	}
-	fila->head++;
+	Aluno prox = acessa_proximo_a(fila->cabeça);
+	fila->cabeça = prox;
 	return 1;
 }
 
@@ -78,21 +77,29 @@ Aluno *busca_f(Fila *fila, int matricula){
 	char nome[50];
 	char curso[30];
 	int i;
-	for ( i = 0; i < fila->tail; i++){
-		acessa_a(fila->alunos[i], &matriculaAux, nome, curso);
-		if(matriculaAux == matricula){
-			return fila->alunos[i];
-		}
+	Aluno x = fila->cabeça;
+	while (x != NULL && x->matricula != matricula){
+		x = acessa_proximo_a(x);
 	}
-	return NULL;
+	return x;
 }
 
 int cheia_f(Fila *fila){
 	if (fila == NULL){
 		return 0;
 	}
-	if (fila->tail >= fila->tamanho){
+	cont = tamanho(fila);
+	if (cont >= fila->tamanho){
 		return 1;
 	} 
 	return 0;
+}
+int tamanho(Fila *fila){
+	int cont = 0;
+	Aluno x = fila->cabeça;
+	while(x != NULL){
+		cont++;
+		x = acessa_proximo_a(x);
+	}
+	return cont;
 }

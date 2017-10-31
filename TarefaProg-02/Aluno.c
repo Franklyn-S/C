@@ -24,7 +24,8 @@ Aluno* novo_a(int matricula, char *nome, char *curso){
 	a->matricula = matricula;
 	strcpy(a->nome,nome);
 	strcpy(a->curso, curso);
-
+	a->prox = NULL;
+	a->ant = NULL;
 	return a;
 }
 
@@ -62,10 +63,14 @@ void atribui_a(Aluno *aluno, int matricula, char *nome, char *curso){
 int tamanho_a(){
 	return sizeof(struct aluno);
 }
-
+//setProximo
 void atribui_proximo_a(Aluno *aluno, Aluno *proximo){
+	if (aluno == NULL || proximo == NULL) {
+		return;
+	}
 	aluno->prox = proximo;
 }
+//getProximo
 Aluno *acessa_proximo_a(Aluno *aluno){
 	return aluno->prox;
 }
