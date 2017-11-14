@@ -1,0 +1,1 @@
+gcc -c Aluno.c -o Aluno.o && gcc -c Fila.c -o Fila.o && gcc -c Teste.c -o Teste.o && gcc -o prog.bin Aluno.o Fila.o Teste.o && ./prog.bin
