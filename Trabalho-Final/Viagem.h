@@ -9,3 +9,5 @@ Viagem *acessa_direita_v(Viagem *viagem);
 void atribui_esquerda(Viagem *viagem, Viagem *esquerda);
 Viagem *acessa_esquerda_v(Viagem *viagem);
 int tamanho_v();
+
+int verificardata(int dia, int mes, int ano);
