@@ -3,7 +3,7 @@
 struct Viagem{
 	int id, dia, mes, ano, periodo;
 	char cidade[61], pais[31];
-	Viagem *direita, *esquerda; 
+	Viagem *direita, *esquerda, *pai, *raiz; 
 }
 int verificar_data(int dia, int mes, int ano){
 	if ((dia >= 1 && dia <= 31) && (mes >= 1 && mes <= 12) && (ano >= 1900 && ano <= 2100)){ //verifica se os numeros sao validos
@@ -35,6 +35,21 @@ int verificar_destino(char *cidade, char *pais){
     return 0;
 }
 
+void transplantar(Viagem *viagem, Viagem *filho){ //onde filho pode ser esquerdo ou direito
+    if (viagem != NULL){
+        if(viagem->pai = NULL){
+            viagem->raiz = filho;
+        }else if(viagem = (viagem->pai)->esquerda){
+            (viagem->pai)->esquerda = filho;
+        }else{
+            (viagem->pai)->direita = filho;
+        }
+        if(viagem->filho != NULL){
+            filho->pai = viagem->pai;
+        }
+    }
+}
+
 Viagem *nova_v(int dia, int mes, int ano, char *cidade, char *pais, int periodo){
     if(verificar_data(dia, mes, ano) && (periodo >= 1) && verificar_destino(cidade, pais)){
         Viagem *v = (*viagem)malloc(sizeof(Viagem));
@@ -47,6 +62,10 @@ Viagem *nova_v(int dia, int mes, int ano, char *cidade, char *pais, int periodo)
         strcpy(v->cidade, cidade);
         strcpy(v->pais, pais);
         v->periodo = periodo;
+        v->esquerda = NULL;
+        v->direita = NULL;
+        v->pai = NULL;
+        v->raiz = v;
         return v;      
     }else{
         return NULL;
@@ -54,12 +73,12 @@ Viagem *nova_v(int dia, int mes, int ano, char *cidade, char *pais, int periodo)
 }
 
 
-void libera_v(Viagem *viagem){ //errado, pois precisa verificar a direita e a esquerda
+void libera_v(Viagem *viagem){ //falar com o Lincoln sobre à necessidade de verificar a direita e a esquerda
     if(viagem != NULL){
         Viagem *nova_viagem;
         viagem = nova_viagem;
         free(viagem);
-        viagem = NULL;    
+        viagem = NULL;   
     }   
 }
 void acessa_v(Viagem *viagem, int *dia, int *mes, int *ano, char *cidade, char *pais, int *periodo){
@@ -82,4 +101,36 @@ void atribui_v(Viagem *viagem, int dia, int mes, int ano, char *cidade, char *pa
         viagem->periodo = periodo;       
     }    
 }
+
+void atribui_direita_v(Viagem *viagem, Viagem *direita){
+    if (viagem != NULL && direita != NULL){
+        viagem->direita = direita;
+        direita->pai = viagem;
+    }
+}
+
+Viagem *acessa_direita_v(Viagem *viagem){
+    if (viagem != NULL){
+        return viagem->direita;
+    }
+}
+
+void atribui_esquerda_v(Viagem *viagem, Viagem *esquerda){
+    if (viagem != NULL && esquerda != NULL){
+        viagem->esquerda = esquerda;
+        esquerda->pai = esquerda;
+    }
+}
+
+Viagem *acessa_esquerda_v(Viagem *viagem){
+    if (viagem != NULL){
+        return viagem->esquerda;
+    }
+}
+
+int tamanho_v(){
+    return sizeof(Viagem);
+}
+
+
 
