@@ -1,11 +1,13 @@
 #include "Viagem.h"
 #include <string.h>
+#include <stdlib.h>
 
-struct Viagem{
+struct viagem{
 	int id, dia, mes, ano, periodo;
 	char cidade[61], pais[31];
 	Viagem *direita, *esquerda, *pai, *raiz; 
-}
+};
+
 int id_viagem = 0;
 
 int verificar_data(int dia, int mes, int ano){
@@ -62,8 +64,8 @@ int verificar_periodo(int periodo){
 
 Viagem *nova_v(int dia, int mes, int ano, char *cidade, char *pais, int periodo){
     if(verificar_data(dia, mes, ano) && verificar_periodo(periodo) && verificar_destino(cidade, pais)){
-        Viagem *v = (*viagem)malloc(sizeof(Viagem));
-        if (v == NUll){
+        Viagem *v = (Viagem*)malloc(sizeof(Viagem));
+        if (v == NULL){
             return NULL;
         }
         v->id = id_viagem++;
@@ -92,23 +94,23 @@ void libera_v(Viagem *viagem){ //falar com o Lincoln sobre à necessidade de ver
         viagem = NULL;   
     }   
 }
-void acessa_v(Viagem *viagem, int *dia, int *mes, int *ano, char *cidade, char *pais, int *periodo){
+void acessa_v(Viagem *viagem, int *dia, int *mes, int *ano, char *cidade, char *pais, int periodo){
     if (viagem != NULL){
-        dia = viagem->dia;
-        mes = viagem->mes;
-        ano = vaigem->ano;
+        *dia = viagem->dia;
+        *mes = viagem->mes;
+        *ano = viagem->ano;
         strcpy(cidade, viagem->cidade);
         strcpy(pais, viagem->pais);
         periodo = viagem->periodo;   
     }
 }
-void atribui_v(Viagem *viagem, int dia, int mes, int ano, char *cidade, char *pais, int periodo){
-    if(verificar_data(dia, mes, ano) && verificar_periodo(periodo) && verificar_destino(cidade, pais)){
-        viagem->dia = dia;
-        viagem->mes = mes;
-        viagem->ano = ano;
-        strcpy(v->cidade, cidade);
-        strcpy(v->pais, pais);
+void atribui_v(Viagem *viagem, int *dia, int *mes, int *ano, char *cidade, char *pais, int periodo){
+    if(verificar_data(*dia, *mes, *ano) && verificar_periodo(periodo) && verificar_destino(cidade, pais)){
+        viagem->dia = *dia;
+        viagem->mes = *mes;
+        viagem->ano = *ano;
+        strcpy(viagem->cidade, cidade);
+        strcpy(viagem->pais, pais);
         viagem->periodo = periodo;       
     }    
 }
