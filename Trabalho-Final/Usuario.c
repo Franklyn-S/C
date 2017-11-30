@@ -1,19 +1,43 @@
 #include "Usuario.h"
+#include <string.h>
 
 struct Usuario{
 	int id;
 	char nome[81];
-	Usuario **amigos; //Vetor de amigos
+	Usuario **amigos; //Vetor de Usuarios
+	int fim;
 	Viagem *viagens; //Lista de agendamento de viagens
 }
-int comparar_data(int dia1, int mes1, int ano1, int dia2, int mes2, int ano2){
-	return (dia1+mes1*30+ano1*365)<=(dia2+mes2*30+ano2*365);
+
+
+/*int comparar_data(int dia1, int mes1, int ano1, int periodo1, int dia2, int mes2, int ano2, int periodo2){
+	
+	return ;
+}*/
+int quantidade_amigos(Usuario *usuario){
+	int quantidade = 0;
+
 }
 Usuario *novo_u(int id, char *nome){
-
+	if(strlen(nome) <=80){ //falta os outros testes
+		Usuario *user = (Usuario*)malloc(sizeof(Usuario));
+		if (user == NULL){
+			return NULL;
+		}
+		user->id = id;
+		user->nome = nome;
+		user->amigos = NULL;
+		user->viagens = NULL;
+	}
 }
 void libera_u(Usuario *usuario){
-
+	for (int i = 0; i < ; ++i){
+		
+	}
+	Usuario *new_user;
+	usuario = new_user;
+	free(usuario);
+	usuario = NULL;
 }
 void acessa_u(Usuario *usuario, int *id, char *nome){
 

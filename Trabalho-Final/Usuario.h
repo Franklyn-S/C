@@ -1,3 +1,6 @@
+#include "Viagem.h"
+typedef struct usuario Usuario;
+//obrigatórias
 Usuario *novo_u(int id, char *nome);
 void libera_u(Usuario *usuario);
 void acessa_u(Usuario *usuario, int *id, char *nome);
@@ -16,5 +19,5 @@ Viagem *filtrar_viagens_amigos_por_destino_u(Usuario *usuario, char *cidade, cha
 Usuario *filtrar_amigos_por_data_viagem_u(Usuario *usuario, int dia, int mes, int ano);
 Usuario *filtrar_amigos_por_destino_viagem_u(Usuario *usuario, char *cidade, char *pais);
 int tamanho_u();
-
+//outras
 int comparar_data();
