@@ -2,7 +2,7 @@ typedef struct viagem Viagem;
 //obrigatórias
 Viagem *nova_v(int dia, int mes, int ano, char *cidade, char *pais, int perido);
 void libera_v(Viagem *viagem);
-void acessa_v(Viagem *viagem, int *dia, int *mes, int *ano, char *cidade, char *pais, int perido);
+void acessa_v(Viagem *viagem, int *id, int *dia, int *mes, int *ano, char *cidade, char *pais, int perido);
 void atribui_v(Viagem *viagem, int *dia, int *mes, int *ano, char *cidade, char *pais, int perido);
 void atribui_direita_v(Viagem *viagem, Viagem *direita);
 Viagem *acessa_direita_v(Viagem *viagem);

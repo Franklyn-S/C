@@ -94,8 +94,9 @@ void libera_v(Viagem *viagem){ //falar com o Lincoln sobre à necessidade de ver
         viagem = NULL;   
     }   
 }
-void acessa_v(Viagem *viagem, int *dia, int *mes, int *ano, char *cidade, char *pais, int periodo){
+void acessa_v(Viagem *viagem, int *id, int *dia, int *mes, int *ano, char *cidade, char *pais, int periodo){
     if (viagem != NULL){
+        *id = viagem->id;
         *dia = viagem->dia;
         *mes = viagem->mes;
         *ano = viagem->ano;
