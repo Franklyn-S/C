@@ -6,7 +6,7 @@ struct Usuario{
 	int id;
 	char nome[81];
 	Usuario **amigos; //Vetor de Usuarios
-	int fim;
+	int tamanho;
 	Viagem *viagens; //Lista de agendamento de viagens
 }
 
@@ -31,22 +31,17 @@ int verificar_id(int id){
 int tamanho_vetor_amigos(Usuario *vetor,Usuario primeiro]){
 	return (sizeof(vetor)/sizeof(primeiro));
 }
-/*
-int quantidade_amigos(Usuario *usuario){
-	int quantidade = 0;
 
-
-}*/
 Usuario *novo_u(int id, char *nome){
 	if(verificar_nome(nome) && verificar_id(id)){ //falta os outros testes
-		Usuario *user = (Usuario*)malloc(sizeof(Usuario));
+		Usuario *user = (Usuario*)malloc(tamanho_u());
 		if (user == NULL){
 			return NULL;
 		}
 		user->id = id;
 		user->nome = nome;
-		user->amigos = (*Usuario)malloc(sizeof(Usuario));
-		user->fim = 0;
+		user->amigos = (*Usuario)malloc(tamanho_u());
+		user->tamanho = 0;
 		user->viagens = NULL;
 	}
 }
@@ -68,17 +63,31 @@ void atribui_u(Usuario *usuario, int id, char *nome){
 		usuario->nome = nome;	
 	}
 }
-//terminar
 void adiciona_amigo_u(Usuario *usuario, Usuario *amigo){
 	if(usuario!= NULL && amigo!= NULL){
 		Usuario u_teste = busca_amigo_u(usuario,amigo->id);
 		if (u_teste == NULL){
-			usuario->amigos = (*Usuario)realloc(()*sizeof(Usuario))//terminar
+			usuario->tamanho++;
+			usuario->amigos = (*Usuario)realloc(usuario->tamanho*tamanho_u())
+			usuario->amigos[usuario->tamanho] = amigo;
+			adiciona_amigo_u(amigo,usuario);
 		}
 	}
 }
 void remove_amigo(Usuario *usuario, int id){
-
+	if (usuario!=NULL && verificar_id(id)){
+		Usuario *amigo_r = busca_amigo_u(usuario,id);
+		if (amigo_r != NULL){
+		for (int i = 0; i < len(usuario->amigos); i++){
+			if (usuario->amigos[i] == amigo_r){
+				for (int j = i; j < len(usuario->amigos)-1; i++){
+					usuario->amigos[j] = usuario->amigos[j+1];
+ 				}
+ 				remove_amigo(amigo_r,usuario->id);
+			}
+		}	
+		}
+	}
 }
 Usuario *busca_amigo_u(Usuario *usuario, int id){
 	if (usuario != NULL && verificar_id(id)){
