@@ -20,4 +20,7 @@ Usuario *filtrar_amigos_por_data_viagem_u(Usuario *usuario, int dia, int mes, in
 Usuario *filtrar_amigos_por_destino_viagem_u(Usuario *usuario, char *cidade, char *pais);
 int tamanho_u();
 //outras
-int comparar_data();
+//int comparar_data();
+//int quantidade_amigos(Usuario *usuario);
+int verificar_nome(char *nome);
+int verificar_id(int id);

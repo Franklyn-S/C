@@ -14,39 +14,64 @@ struct Usuario{
 	
 	return ;
 }*/
+int verificar_nome(char *nome){
+	if(strlen(nome) <=80){
+		return 1;
+	}
+	return 0;
+}
+int verificar_id(int id){
+	if(id>=0){
+		return 1;
+	}
+	return 0;
+}
+
+int tamanho_vetor_amigos(Usuario *vetor,Usuario primeiro]){
+	return (sizeof(vetor)/sizeof(primeiro));
+}
+/*
 int quantidade_amigos(Usuario *usuario){
 	int quantidade = 0;
 
-}
+
+}*/
 Usuario *novo_u(int id, char *nome){
-	if(strlen(nome) <=80){ //falta os outros testes
+	if(verificar_nome(nome) && verificar_id(id)){ //falta os outros testes
 		Usuario *user = (Usuario*)malloc(sizeof(Usuario));
 		if (user == NULL){
 			return NULL;
 		}
 		user->id = id;
 		user->nome = nome;
-		user->amigos = NULL;
+		user->amigos = (*Usuario)malloc(sizeof(Usuario));
+		user->fim = 0;
 		user->viagens = NULL;
 	}
 }
-void libera_u(Usuario *usuario){
-	for (int i = 0; i < ; ++i){
-		
-	}
+
+void libera_u(Usuario *usuario){//terminar
+	libera_v(usuario->viagem)
 	Usuario *new_user;
 	usuario = new_user;
 	free(usuario);
 	usuario = NULL;
 }
 void acessa_u(Usuario *usuario, int *id, char *nome){
-
+	*id = usuario->id;
+	*nome = usuario->nome;
 }
 void atribui_u(Usuario *usuario, int id, char *nome){
-
+	if (usuario != NULL && verificar_id(id) && verificar_nome(nome)){
+		usuario->id = id;
+		usuario->nome = nome;	
+	}
 }
+//terminar
 void adiciona_amigo_u(Usuario *usuario, Usuario *amigo){
+	if(usuario!= NULL && amigo!= NULL){
 
+	}
 }
 void remove_amigo(Usuario *usuario, int id){
 
