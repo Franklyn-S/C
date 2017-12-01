@@ -1,5 +1,6 @@
 #include "Usuario.h"
 #include <string.h>
+#include <stdlib.h>
 
 struct Usuario{
 	int id;
@@ -70,17 +71,33 @@ void atribui_u(Usuario *usuario, int id, char *nome){
 //terminar
 void adiciona_amigo_u(Usuario *usuario, Usuario *amigo){
 	if(usuario!= NULL && amigo!= NULL){
-
+		Usuario u_teste = busca_amigo_u(usuario,amigo->id);
+		if (u_teste == NULL){
+			usuario->amigos = (*Usuario)realloc(()*sizeof(Usuario))//terminar
+		}
 	}
 }
 void remove_amigo(Usuario *usuario, int id){
 
 }
 Usuario *busca_amigo_u(Usuario *usuario, int id){
-
+	if (usuario != NULL && verificar_id(id)){
+		int id_teste;
+		char *nome_teste;
+		
+		for(int i = 0;i < len(usuario); i++){
+			acessa_u(usuario->amigos[i],&id_teste,nome_teste);
+			if(id_teste == id){
+				return usuario->amigos[i];
+			}
+		}
+	}
+	return NULL;
 }
 Usuario *lista_amigos_u(Usuario *usuario){
-
+	if (usuario != NULL){
+		return usuario->amigos;
+	}
 }
 void adiciona_viagem_u(Usuario *usuario, Viagem *viagem){
 
