@@ -11,14 +11,23 @@ struct Usuario{
 }
 
 //1 - viagem que já está na árvore
-//2 - viagem que eu quero verificar se a data não "bate" com as outras
+//2 - viagem que eu quero verificar se a data "bate" com as outras
 int comparar_data(int dia1, int mes1, int ano1, int periodo1, int dia2, int mes2, int ano2, int periodo2){
 	total1 = dia1+mes1*30+ano1*365;
 	total2 = dia2+mes2*30+ano2*365;
-	if(total1<total2){
-		
-	}else{
 
+	if(total1<total2){
+		if(total1+periodo1 < total2){
+			return 1;
+		}else{
+			return 0;
+		}                                                                                                                                                                                    
+	}else{
+		if(total2+periodo2 < total1){
+			return 1;
+		}else{
+			return 0;
+		}
 	}
 
 	return ;
