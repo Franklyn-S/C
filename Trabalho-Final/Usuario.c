@@ -10,11 +10,19 @@ struct Usuario{
 	Viagem *viagens; //Lista de agendamento de viagens
 }
 
+//1 - viagem que já está na árvore
+//2 - viagem que eu quero verificar se a data não "bate" com as outras
+int comparar_data(int dia1, int mes1, int ano1, int periodo1, int dia2, int mes2, int ano2, int periodo2){
+	total1 = dia1+mes1*30+ano1*365;
+	total2 = dia2+mes2*30+ano2*365;
+	if(total1<total2){
+		
+	}else{
 
-/*int comparar_data(int dia1, int mes1, int ano1, int periodo1, int dia2, int mes2, int ano2, int periodo2){
-	
+	}
+
 	return ;
-}*/
+}
 int verificar_nome(char *nome){
 	if(strlen(nome) <=80){
 		return 1;
