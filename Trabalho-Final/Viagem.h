@@ -12,4 +12,5 @@ int tamanho_v();
 //outras
 int verificar_data(int dia, int mes, int ano);
 int verificar_destino(char *cidade, char *pais);
+acessa_v_data(Viagem *viagem, int *dia, int *mes, int *ano);
 //void transplantar(Viagem *viagem, Viagem *filho);

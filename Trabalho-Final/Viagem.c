@@ -105,6 +105,13 @@ void acessa_v(Viagem *viagem, int *id, int *dia, int *mes, int *ano, char *cidad
         periodo = viagem->periodo;   
     }
 }
+//nova
+acessa_v_data(Viagem *viagem, int *dia, int *mes, int *ano){
+    *dia = viagem->dia;
+    *mes = viagem->mes;
+    *ano = viagem->ano;
+}
+//
 void atribui_v(Viagem *viagem, int *dia, int *mes, int *ano, char *cidade, char *pais, int periodo){
     if(verificar_data(*dia, *mes, *ano) && verificar_periodo(periodo) && verificar_destino(cidade, pais)){
         viagem->dia = *dia;
