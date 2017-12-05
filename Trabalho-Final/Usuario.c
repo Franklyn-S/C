@@ -47,7 +47,7 @@ Usuario *novo_u(int id, char *nome){
 }
 
 void libera_u(Usuario *usuario){//terminar
-	libera_v(usuario->viagem)
+	libera_v(usuario->viagens)
 	Usuario *new_user;
 	usuario = new_user;
 	free(usuario);
@@ -83,6 +83,7 @@ void remove_amigo(Usuario *usuario, int id){
 				for (int j = i; j < len(usuario->amigos)-1; i++){
 					usuario->amigos[j] = usuario->amigos[j+1];
  				}
+ 				usuario->tamanho--;
  				remove_amigo(amigo_r,usuario->id);
 			}
 		}	
@@ -105,11 +106,33 @@ Usuario *busca_amigo_u(Usuario *usuario, int id){
 }
 Usuario *lista_amigos_u(Usuario *usuario){
 	if (usuario != NULL){
-		return usuario->amigos;
+		Usuario *amigos_copia[usuario->tamanho];
+		for (int i = 0; i < len(usuario); i++){
+			amigos_copia[i] = usuario->amigos[i];
+		}
+		return *amigos_copia;
 	}
 }
 void adiciona_viagem_u(Usuario *usuario, Viagem *viagem){
+	if(usuario != NULL && viagem != NULL){
+		if (usuario->viagens = NULL){
+			usuario->viagens = viagem;
+		}
 
+		//verificar
+		int dia_v_nova, mes_v_nova, ano_v_nova, dias_total;
+		acessa_v_data(viagem,dia_v_nova, mes_v_nova,ano_v_nova);
+		dias_total = dia_v_nova+mes_v_nova*30+ano_v_nova*365;
+
+		for (int i = 0; i <= len(usuario->viagens); i++){
+			int dia_teste, mes_teste, ano_teste, dias_total_teste;
+			acessa_v_data(usuario->viagens[i],dia_teste ,mes_teste, ano_teste);
+			dias_total_teste = dia_teste+mes_teste*30+ano_teste*365;
+			if (dias_total>dias_total_teste){
+
+			}
+		}
+	}
 }
 void remover_viagem_u(Usuario *usuario, int id){
 
