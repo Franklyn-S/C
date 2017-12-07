@@ -145,6 +145,14 @@ Viagem *acessa_esquerda_v(Viagem *viagem){
     return viagem->esquerda;
 }
 
+Viagem *acessa_pai_v(Viagem *viagem){
+    return viagem->pai;
+}
+
+Viagem *acessa_raiz_v(Viagem *viagem){
+    return viagem->raiz;
+}
+
 int tamanho_v(){
     return sizeof(Viagem);
 }

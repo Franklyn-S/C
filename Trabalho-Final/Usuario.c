@@ -9,6 +9,8 @@ struct Usuario{
 	int tamanho;
 	Viagem *viagens; //Lista de agendamento de viagens
 }
+Usuario* GlobalUser;
+int tamanho_global = 0;
 
 //1 - viagem que já está na árvore
 //2 - viagem que eu quero verificar se a data "bate" com as outras
@@ -39,15 +41,25 @@ int verificar_nome(char *nome){
 	return 0;
 }
 int verificar_id(int id){
+	if (GlobalUser != NULL){
+		for (int i = 0; i < tamanho_global; i++){
+			user_teste = GlobalUser[i]
+			if (user_teste->id == id){
+				return 0;
+			}
+		}
+	}
 	if(id>=0){
 		return 1;
 	}
 	return 0;
 }
 
+/*
 int tamanho_vetor_amigos(Usuario *vetor,Usuario primeiro]){
 	return (sizeof(vetor)/sizeof(primeiro));
 }
+*/
 
 Usuario *novo_u(int id, char *nome){
 	if(verificar_nome(nome) && verificar_id(id)){ //falta os outros testes
@@ -60,10 +72,23 @@ Usuario *novo_u(int id, char *nome){
 		user->amigos = (*Usuario)malloc(tamanho_u());
 		user->tamanho = 0;
 		user->viagens = NULL;
+		if (GlobalUser == NULL){
+			tamanho_global++;
+			GlobalUser = (Usuario**)malloc(sizeof(tamanho_global*tamanho_u()));
+			GlobalUser[0] = user;
+		}else{
+			tamanho_global++;
+			GlobalUser = (Usuario**)realloc(GlobalUser,sizeof(tamanho_global*tamanho_u()));
+			GlobalUser[tamanho_global-1] = user;
+		}
 	}
 }
 
 void libera_u(Usuario *usuario){//terminar
+	for (int i = 0; i < ; ++i){
+		/* code */
+	}
+	
 	libera_v(usuario->viagens)
 	Usuario *new_user;
 	usuario = new_user;
