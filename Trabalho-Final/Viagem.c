@@ -106,10 +106,11 @@ void acessa_v(Viagem *viagem, int *id, int *dia, int *mes, int *ano, char *cidad
     }
 }
 //nova
-acessa_v_data(Viagem *viagem, int *dia, int *mes, int *ano){
+acessa_v_data(Viagem *viagem, int *dia, int *mes, int *ano, int*periodo){
     *dia = viagem->dia;
     *mes = viagem->mes;
     *ano = viagem->ano;
+    *periodo = viagem->periodo;
 }
 //
 void atribui_v(Viagem *viagem, int *dia, int *mes, int *ano, char *cidade, char *pais, int periodo){
@@ -151,6 +152,10 @@ Viagem *acessa_pai_v(Viagem *viagem){
 
 Viagem *acessa_raiz_v(Viagem *viagem){
     return viagem->raiz;
+}
+
+void atribui_raiz(Viagem *viagem, Viagem *raiz){
+
 }
 
 int tamanho_v(){

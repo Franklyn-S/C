@@ -6,17 +6,39 @@ struct Usuario{
 	int id;
 	char nome[81];
 	Usuario **amigos; //Vetor de Usuarios
-	int tamanho;
+	int tamanho; //tamanho do vetor amigos
 	Viagem *viagens; //Lista de agendamento de viagens
 }
 Usuario* GlobalUser;
 int tamanho_global = 0;
 
-//1 - viagem que já está na árvore
-//2 - viagem que eu quero verificar se a data "bate" com as outras
-int comparar_data(int dia1, int mes1, int ano1, int periodo1, int dia2, int mes2, int ano2, int periodo2){
-	total1 = dia1+mes1*30+ano1*365;
-	total2 = dia2+mes2*30+ano2*365;
+int PercursoEmOrderm(Viagem *viagem1, Viagem *viagem2){//1 - viagem que já está na árvore
+	if(viagem1 != NULL){
+		Viagem *esquerda = acessa_esquerda_v(viagem1)
+		PercursoEmOrderm(esquerda);
+		if (!comparar_data(viagem1, viagem2)){
+			return 0;
+		}
+		Viagem *direita = acessa_direita_v(viagem1);
+		PercursoEmOrderm(direita);	
+	}
+	
+	return 1;
+}
+
+int comparar_data(Viagem viagem1, Viagem viagem2){
+	int dia1; 
+	int mes1; 
+	int ano1;
+	int periodo1;
+	acessa_v_data(viagem1, dia1, mes1, ano1, periodo1);
+	int dia2;
+	int mes2;
+	int ano2;
+	int periodo2;
+	acessa_v_data(viagem2, dia2, mes2, ano2, periodo2);
+	total1 = dia1+mes1*30+ano1*365;//1 - viagem que já está na árvore
+	total2 = dia2+mes2*30+ano2*365;//2 - viagem que eu quero verificar se a data "bate" com as outras
 
 	if(total1<total2){
 		if(total1+periodo1 < total2){
@@ -62,7 +84,7 @@ int tamanho_vetor_amigos(Usuario *vetor,Usuario primeiro]){
 */
 
 Usuario *novo_u(int id, char *nome){
-	if(verificar_nome(nome) && verificar_id(id)){ //falta os outros testes
+	if(verificar_nome(nome) && verificar_id(id)){
 		Usuario *user = (Usuario*)malloc(tamanho_u());
 		if (user == NULL){
 			return NULL;
@@ -85,10 +107,14 @@ Usuario *novo_u(int id, char *nome){
 }
 
 void libera_u(Usuario *usuario){//terminar
-	for (int i = 0; i < ; ++i){
-		/* code */
+	int i = 0;
+	while(i < tamanho_global && usuario != GlobalUser){
+		i++;
 	}
-	
+	for (int j = i; j < tamanho_global-1; j++){
+		GlobalUser[j] = GlobalUser[j+1]
+	}
+
 	libera_v(usuario->viagens)
 	Usuario *new_user;
 	usuario = new_user;
@@ -117,7 +143,7 @@ void adiciona_amigo_u(Usuario *usuario, Usuario *amigo){
 	}
 }
 void remove_amigo(Usuario *usuario, int id){
-	if (usuario!=NULL && verificar_id(id)){
+	if (usuario!=NULL && id > 0{
 		Usuario *amigo_r = busca_amigo_u(usuario,id);
 		if (amigo_r != NULL){
 		for (int i = 0; i < len(usuario->amigos); i++){
@@ -133,7 +159,7 @@ void remove_amigo(Usuario *usuario, int id){
 	}
 }
 Usuario *busca_amigo_u(Usuario *usuario, int id){
-	if (usuario != NULL && verificar_id(id)){
+	if (usuario != NULL && id > 0){
 		int id_teste;
 		char *nome_teste;
 		
@@ -159,20 +185,10 @@ void adiciona_viagem_u(Usuario *usuario, Viagem *viagem){
 	if(usuario != NULL && viagem != NULL){
 		if (usuario->viagens = NULL){
 			usuario->viagens = viagem;
-		}
-
-		//verificar
-		int dia_v_nova, mes_v_nova, ano_v_nova, dias_total;
-		acessa_v_data(viagem,dia_v_nova, mes_v_nova,ano_v_nova);
-		dias_total = dia_v_nova+mes_v_nova*30+ano_v_nova*365;
-
-		for (int i = 0; i <= len(usuario->viagens); i++){
-			int dia_teste, mes_teste, ano_teste, dias_total_teste;
-			acessa_v_data(usuario->viagens[i],dia_teste ,mes_teste, ano_teste);
-			dias_total_teste = dia_teste+mes_teste*30+ano_teste*365;
-			if (dias_total>dias_total_teste){
-
-			}
+			viagem->raiz = viagem;
+			atribui_raiz(viagem, viagem);
+		}else if(PercursoEmOrderm(usuario->viagem, viagem)){
+			//adicionar Usuario aqui
 		}
 	}
 }
