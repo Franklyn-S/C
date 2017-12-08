@@ -12,15 +12,15 @@ struct Usuario{
 Usuario* GlobalUser;
 int tamanho_global = 0;
 
-int PercursoEmOrderm(Viagem *viagem1, Viagem *viagem2){//1 - viagem que já está na árvore
+int PercursoEmOrdem(Viagem *viagem1, Viagem *viagem2){//1 - viagem que já está na árvore
 	if(viagem1 != NULL){
 		Viagem *esquerda = acessa_esquerda_v(viagem1)
-		PercursoEmOrderm(esquerda);
+		PercursoEmOrdem(esquerda);
 		if (!comparar_data(viagem1, viagem2)){
 			return 0;
 		}
 		Viagem *direita = acessa_direita_v(viagem1);
-		PercursoEmOrderm(direita);	
+		PercursoEmOrdem(direita);	
 	}
 	
 	return 1;
@@ -187,8 +187,22 @@ void adiciona_viagem_u(Usuario *usuario, Viagem *viagem){
 			usuario->viagens = viagem;
 			viagem->raiz = viagem;
 			atribui_raiz(viagem, viagem);
-		}else if(PercursoEmOrderm(usuario->viagem, viagem)){
+		}else if(PercursoEmOrdem(usuario->viagens, viagem)){
 			//adicionar Usuario aqui
+			Viagem *y = NULL;
+			Viagem *x = usuario->viagens;
+			int *dia1, *mes1, *ano1, *dia2, *mes2, *ano2;
+			acessa_v_data(usuario->viagens, dia1, mes1, ano1);
+			int total1 = data1 + mes1*30 + ano1*365;
+			while(x != NULL){
+				y = x;
+				acessa_v_data(viagem, dia2, mes2, ano2);
+				int total2 = dia2 + mes2*30 + ano2*365;
+				if(total2 < total1){
+					
+				}
+
+			}
 		}
 	}
 }

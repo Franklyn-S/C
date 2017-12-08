@@ -155,7 +155,9 @@ Viagem *acessa_raiz_v(Viagem *viagem){
 }
 
 void atribui_raiz(Viagem *viagem, Viagem *raiz){
-
+        if (viagem != NULL && raiz != NULL){
+        viagem->raiz = raiz;
+    }
 }
 
 int tamanho_v(){

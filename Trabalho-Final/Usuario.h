@@ -23,4 +23,4 @@ int tamanho_u();
 int comparar_data(Viagem *viagem1,Viagem *viagem2);
 int verificar_nome(char *nome);
 int verificar_id(int id);
-int PercursoEmOrderm(Viagem *viagem1, Viagem *viagem2);
+int PercursoEmOrdem(Viagem *viagem1, Viagem *viagem2);
