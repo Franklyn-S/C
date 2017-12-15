@@ -106,7 +106,7 @@ void acessa_v(Viagem *viagem, int *id, int *dia, int *mes, int *ano, char *cidad
     }
 }
 //nova
-acessa_v_data(Viagem *viagem, int *dia, int *mes, int *ano, int*periodo){
+acessa_v_data(Viagem *viagem, int *dia, int *mes, int *ano, int periodo){
     *dia = viagem->dia;
     *mes = viagem->mes;
     *ano = viagem->ano;
