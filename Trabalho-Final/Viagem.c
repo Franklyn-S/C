@@ -47,7 +47,14 @@ int verificar_periodo(int periodo){
     return 0;
 }
 
-/*void transplantar(Viagem *viagem, Viagem *filho){ //onde filho pode ser esquerdo ou direito
+Viagem *minR(Viagem* x){ //retorna um ponteiro para o nó mínimo na subárvore enraizada em x
+	if(x->esquerda == NULL){
+		return x;
+	}
+	return minR(x->esquerda);
+}
+
+void transplantar(Viagem *viagem, Viagem *filho){ //onde filho pode ser esquerdo ou direito
     if (viagem != NULL){
         if(viagem->pai = NULL){
             viagem->raiz = filho;
@@ -60,7 +67,7 @@ int verificar_periodo(int periodo){
             filho->pai = viagem->pai;
         }
     }
-}*/
+}
 
 Viagem *nova_v(int dia, int mes, int ano, char *cidade, char *pais, int periodo){
     if(verificar_data(dia, mes, ano) && verificar_periodo(periodo) && verificar_destino(cidade, pais)){
@@ -94,7 +101,7 @@ void libera_v(Viagem *viagem){ //falar com o Lincoln sobre à necessidade de ver
         viagem = NULL;   
     }   
 }
-void acessa_v(Viagem *viagem, int *id, int *dia, int *mes, int *ano, char *cidade, char *pais, int periodo){
+void acessa_v(Viagem *viagem, int *id, int *dia, int *mes, int *ano, char *cidade, char *pais, int *periodo){
     if (viagem != NULL){
         *id = viagem->id;
         *dia = viagem->dia;
@@ -106,7 +113,7 @@ void acessa_v(Viagem *viagem, int *id, int *dia, int *mes, int *ano, char *cidad
     }
 }
 //nova
-acessa_v_data(Viagem *viagem, int *dia, int *mes, int *ano, int periodo){
+acessa_v_data(Viagem *viagem, int *dia, int *mes, int *ano, int *periodo){
     *dia = viagem->dia;
     *mes = viagem->mes;
     *ano = viagem->ano;
