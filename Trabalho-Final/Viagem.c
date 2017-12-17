@@ -47,11 +47,24 @@ int verificar_periodo(int periodo){
     return 0;
 }
 
+
 Viagem *minR(Viagem* x){ //retorna um ponteiro para o nó mínimo na subárvore enraizada em x
 	if(x->esquerda == NULL){
 		return x;
 	}
 	return minR(x->esquerda);
+}
+
+Viagem *sucessor(Viagem* x){
+	if(x->direita != NULL){
+		return minR(x->direita);
+	}
+	Viagem *p = x->pai;
+	while(p != NULL && x = p->direita){
+		x = p;
+		p = x->pai;
+	}
+	return p;
 }
 
 void transplantar(Viagem *viagem, Viagem *filho){ //onde filho pode ser esquerdo ou direito

@@ -13,11 +13,11 @@ struct Usuario{
 Usuario** GlobalUser = NULL; //vetor que contém todos os usuários
 int tamanho_global = 0;
 
-int PercursoEmOrdem(Viagem *viagem1, Viagem *viagem2){//1 - viagem que já está na árvore
+int PercursoEmOrdem(Viagem *viagem1, Viagem *viagem2, int id2){//1 - viagem que já está na árvore
 	if(viagem1 != NULL){
 		Viagem *esquerda = acessa_esquerda_v(viagem1);
 		PercursoEmOrdem(esquerda, viagem2);
-		if (!comparar_data(viagem1, viagem2)){
+		if (!comparar_data(viagem1, viagem2) || viagem1->id == id2){
 			return 0;
 		}
 		Viagem *direita = acessa_direita_v(viagem1);
@@ -123,9 +123,13 @@ Usuario *novo_u(int id, char *nome){
 	}
 }
 
-void libera_u(Usuario *usuario){//terminar
+void libera_u(Usuario *usuario){
 	removerGlobaluser(usuario);
 	int i = 0;
+	while(usuario->amigos[i] != NULL){
+		remove_amigo(usuario->amigos[i], (usuario->amigos[i])->id);
+		i++;
+	}
 	libera_v(usuario->viagens);
 	Usuario *new_user;
 	usuario = new_user;
@@ -158,10 +162,17 @@ void remove_amigo(Usuario *usuario, int id){
 		Usuario *amigo_r = busca_amigo_u(usuario,id);
 		if (amigo_r != NULL){
 			int tam = sizeof(usuario->amigos)/sizeof(usuario->amigos[0]);
+
 			for (int i = 0; i < tam; i++){
 				if (usuario->amigos[i] == amigo_r){
-					for (int j = i; j < tam-1; i++){
-						usuario->amigos[j] = usuario->amigos[j+1];
+					Usuario *vazio;
+					if(tam == 1){
+						usuario->amigos[0] = vazio;
+					else{	
+						for (int j = i; j < tam-1; i++){
+							usuario->amigos[j] = usuario->amigos[j+1];
+							usuario->amigos[j+1] = vazio;
+	 					}
 	 				}
 	 				usuario->tamanho--;
 	 				remove_amigo(amigo_r,usuario->id);
@@ -208,17 +219,15 @@ void adiciona_viagem_u(Usuario *usuario, Viagem *viagem){
 		acessa_v(viagem, id1, dia1, mes1, ano1, cidade1, pais1, periodo1);
 		if (usuario->viagens = NULL){
 			usuario->viagens = viagem;
-			viagem->raiz = viagem;
 			atribui_raiz(viagem, viagem);
-		}else if(PercursoEmOrdem(usuario->viagens, viagem) && viagem->id != id1){ //testa se a viagem pode ser inserida  
-			//adicionar Usuario aqui
-			Viagem *p = NULL;
-			Viagem *i = (usuario->viagens)->raiz;
+		}else if(PercursoEmOrdem(usuario->viagens, viagem, viagem->id)){ //testa se a viagem pode ser inserida  
+			//adiciona viagem aqui
+			Viagem *p = NULL; //ponteiro para o pai
+			Viagem *i = (usuario->viagens)->raiz; // iterador
 	
 			int total1 = *dia1 + *mes1*30 + *ano1*365;
 			while(i != NULL){
 				p = i;
-				
 				int total2 = *dia2 + *mes2*30 + *ano2*365;
 				if(total1 < total2){
 					i = i->esquerda;
@@ -294,13 +303,40 @@ Viagem *buscar_viagem_por_id_u(Usuario *usuario, int id){
 	return NULL;
 }
 Viagem *buscar_viagem_por_data_u(Usuario *usuario, int dia, int mes, int ano){
-
+	if (usuario != NULL && dia >= 1 && mes >= 1 && ano >= 1 ){
+		Viagem *i = usuario->viagens;
+		int total1 = dia + mes*30 + ano*365;
+		while(i != NULL){
+			if(i->ano == ano && i->mes == mes && i->dia == dia){
+				return i;
+			}else{
+				int *dia2, *mes2, *ano2, *periodo2;
+				acessa_v_data(i, dia2, *mes2, *ano2, *periodo2);
+				int total2 = *dia2, *mes2*30, *ano2*365;
+				if (total1 < total2){
+					i = i->esquerda;
+				}else{
+					i = i->direita;
+				}
+			}
+		}
+	}
+	return NULL;
 }
 Viagem *buscar_viagem_por_destino_u(Usuario *usuario, char *cidade, char *pais){
-
+	if (usuario != NULL && verificar_destino(cidade, pais)){
+		Viagem *i = minR(usuario->viagens);
+		while(i != NULL){
+			if(i->cidade == cidade && i->pais == pais){
+				return i;
+			}
+			i = sucessor(i);
+		}
+	}
+	return NULL;
 }
 Viagem *filtrar_viagens_amigos_por_data_u(Usuario *usuario, int dia, int mes, int ano){
-
+	
 }
 Viagem *filtrar_viagens_amigos_por_destino_u(Usuario *usuario, char *cidade, char *pais){
 
