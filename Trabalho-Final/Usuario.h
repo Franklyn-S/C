@@ -24,5 +24,5 @@ Viagem *buscar_viagem_por_id_u(Usuario *usuario, int id);
 int comparar_data(Viagem *viagem1,Viagem *viagem2);
 int verificar_nome(char *nome);
 int verificar_id(int id);
-int PercursoEmOrdem(Viagem *viagem1, Viagem *viagem2);
+int PercursoEmOrdem(Viagem *viagem1, Viagem *viagem2, int id2);
 void removerGlobaluser(Usuario *usuario);

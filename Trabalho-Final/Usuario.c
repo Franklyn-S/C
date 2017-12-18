@@ -1,14 +1,15 @@
+#include "Viagem.h"
 #include "Usuario.h"
 #include <string.h>
 #include <stdlib.h>
 
-struct Usuario{
+struct usuario{
 	int id;
 	char nome[81];
 	Usuario **amigos; //Vetor de Usuarios
 	int tamanho; //tamanho do vetor amigos
 	Viagem *viagens; //Lista de agendamento de viagens
-}
+};
 
 Usuario** GlobalUser = NULL; //vetor que contém todos os usuários
 int tamanho_global = 0;
@@ -16,12 +17,12 @@ int tamanho_global = 0;
 int PercursoEmOrdem(Viagem *viagem1, Viagem *viagem2, int id2){//1 - viagem que já está na árvore
 	if(viagem1 != NULL){
 		Viagem *esquerda = acessa_esquerda_v(viagem1);
-		PercursoEmOrdem(esquerda, viagem2);
+		PercursoEmOrdem(esquerda, viagem2, id2);
 		if (!comparar_data(viagem1, viagem2) || viagem1->id == id2){
 			return 0;
 		}
 		Viagem *direita = acessa_direita_v(viagem1);
-		PercursoEmOrdem(direita, viagem2);	
+		PercursoEmOrdem(direita, viagem2, id2);	
 	}
 	
 	return 1;
@@ -311,8 +312,8 @@ Viagem *buscar_viagem_por_data_u(Usuario *usuario, int dia, int mes, int ano){
 				return i;
 			}else{
 				int *dia2, *mes2, *ano2, *periodo2;
-				acessa_v_data(i, dia2, *mes2, *ano2, *periodo2);
-				int total2 = *dia2, *mes2*30, *ano2*365;
+				acessa_v_data(i, dia2, mes2, ano2, periodo2);
+				int total2 = *dia2 + *mes2*30 +*ano2*365;
 				if (total1 < total2){
 					i = i->esquerda;
 				}else{
