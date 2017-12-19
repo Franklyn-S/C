@@ -1,7 +1,13 @@
-#include "Viagem.h"
+//#include "Viagem.h"
 #include "Usuario.h"
 #include <string.h>
 #include <stdlib.h>
+
+struct viagem{
+	int id, dia, mes, ano, periodo;
+	char cidade[61], pais[31];
+	Viagem *direita, *esquerda, *pai, *raiz; 
+};
 
 struct usuario{
 	int id;
@@ -13,20 +19,6 @@ struct usuario{
 
 Usuario** GlobalUser = NULL; //vetor que contém todos os usuários
 int tamanho_global = 0;
-
-int PercursoEmOrdem(Viagem *viagem1, Viagem *viagem2, int id2){//1 - viagem que já está na árvore
-	if(viagem1 != NULL){
-		Viagem *esquerda = acessa_esquerda_v(viagem1);
-		PercursoEmOrdem(esquerda, viagem2, id2);
-		if (!comparar_data(viagem1, viagem2) || viagem1->id == id2){
-			return 0;
-		}
-		Viagem *direita = acessa_direita_v(viagem1);
-		PercursoEmOrdem(direita, viagem2, id2);	
-	}
-	
-	return 1;
-}
 
 int comparar_data(Viagem *viagem1, Viagem *viagem2){
 	int *dia1, *mes1, *ano1, *periodo1;
@@ -52,6 +44,22 @@ int comparar_data(Viagem *viagem1, Viagem *viagem2){
 
 	return 0;
 }
+
+int PercursoEmOrdem(Viagem *viagem1, Viagem *viagem2, int id2){//1 - viagem que já está na árvore
+	if(viagem1 != NULL){
+		Viagem *esquerda = acessa_esquerda_v(viagem1);
+		PercursoEmOrdem(esquerda, viagem2, id2);
+		if (!comparar_data(viagem1, viagem2) || viagem1->id == id2){
+			return 0;
+		}
+		Viagem *direita = acessa_direita_v(viagem1);
+		PercursoEmOrdem(direita, viagem2, id2);	
+	}
+	
+	return 1;
+}
+
+
 int verificar_nome(char *nome){
 	if(strlen(nome) <=80){
 		return 1;
@@ -77,17 +85,17 @@ void removerGlobaluser(Usuario *usuario){
 	if(usuario != NULL && GlobalUser != NULL){
 		int id_teste;
 		char *nome_teste;
-		tam = sizeof(GlobalUser)/sizeof(GlobalUser[0]);
+		int tam = sizeof(GlobalUser)/sizeof(GlobalUser[0]);
 		for (int i = 0; i < tam; i++){
-			acessa_u(Globaluser[i], id_teste, nome_teste);
+			acessa_u(GlobalUser[i], &id_teste, nome_teste);
 			if(id_teste == usuario->id){
 				Usuario *vazio;
 				if(tam == 1){
 					GlobalUser[0] = vazio;
 				}else{
 					for (int j = i; j <= tam-1; j++){
-						Globaluser[j] = Globaluser[j+1];
-						Globaluser[j+1] = vazio;
+						GlobalUser[j] = GlobalUser[j+1];
+						GlobalUser[j+1] = vazio;
 					}	
 				}
 			}
@@ -101,12 +109,12 @@ Usuario *novo_u(int id, char *nome){
 		if (user == NULL){
 			return NULL;
 		}
-		Usuario **amigos = (**Usuario) malloc(tamanho_u());
+		Usuario **amigos = (Usuario**)malloc(tamanho_u());
 		if(amigos == NULL){
 			return NULL;
 		}
 		user->id = id;
-		user->nome = nome;
+		strcpy(user->nome, nome);
 		user->amigos = amigos;
 		user->tamanho = 0;
 		user->viagens = NULL;
@@ -139,12 +147,12 @@ void libera_u(Usuario *usuario){
 }
 void acessa_u(Usuario *usuario, int *id, char *nome){
 	*id = usuario->id;
-	*nome = usuario->nome;
+	strcpy(nome, usuario->nome);
 }
 void atribui_u(Usuario *usuario, int id, char *nome){
 	if (usuario != NULL && verificar_id(id) && verificar_nome(nome)){
 		usuario->id = id;
-		usuario->nome = nome;	
+		strcpy(usuario->nome, nome);
 	}
 }
 void adiciona_amigo_u(Usuario *usuario, Usuario *amigo){
@@ -152,7 +160,7 @@ void adiciona_amigo_u(Usuario *usuario, Usuario *amigo){
 		Usuario *u_teste = busca_amigo_u(usuario,amigo->id);
 		if (u_teste == NULL){
 			usuario->tamanho++;
-			usuario->amigos = (**Usuario)realloc(usuario->tamanho*tamanho_u());
+			usuario->amigos = (Usuario**)realloc(usuario->amigos, usuario->tamanho*tamanho_u());
 			usuario->amigos[usuario->tamanho] = amigo;
 			adiciona_amigo_u(amigo,usuario);
 		}
@@ -169,7 +177,7 @@ void remove_amigo(Usuario *usuario, int id){
 					Usuario *vazio;
 					if(tam == 1){
 						usuario->amigos[0] = vazio;
-					else{	
+					}else{	
 						for (int j = i; j < tam-1; i++){
 							usuario->amigos[j] = usuario->amigos[j+1];
 							usuario->amigos[j+1] = vazio;
@@ -259,27 +267,22 @@ void adiciona_viagem_u(Usuario *usuario, Viagem *viagem){
 void remover_viagem_u(Usuario *usuario, int id){
 	if(usuario != NULL && id > 0){
 		Viagem *viagem_r = buscar_viagem_por_id_u(usuario, id);
-		if (viagem_r != NULL && usuario->viagens[0] != NULL){
-			int tam = sizeof(usuario->viagens)/sizeof(usuario->viagens[0]);
-			for(int i = 0; i < tam; i++){
-				if(viagem_r->id = id){
-					//remover viagem aqui
-					if(viagem_r->esquerda == NULL){
-						transplantar(viagem_r, viagem_r->direita);
-					}else if(viagem_r->direita == NULL){
-						transplantar(viagem_r, viagem_r->esquerda);
-					}else{
-						Viagem *min = minR(viagem_r->direita);
-						if(min->pai != viagem_r){
-							transplantar(min, min->direita);
-							min->direita = viagem_r->direita;
-							(viagem_r->direita)->pai = min;
-						}
-						transplantar(viagem_r, min);
-						min->esquerda = viagem_r->esquerda;
-						(viagem_r->esquerda)->pai = min;
-					}
+		if(viagem_r != NULL){
+			//remover viagem aqui
+			if(viagem_r->esquerda == NULL){
+				transplantar(viagem_r, viagem_r->direita);
+			}else if(viagem_r->direita == NULL){
+				transplantar(viagem_r, viagem_r->esquerda);
+			}else{
+				Viagem *min = minR(viagem_r->direita);
+				if(min->pai != viagem_r){
+					transplantar(min, min->direita);
+					min->direita = viagem_r->direita;
+					(viagem_r->direita)->pai = min;
 				}
+				transplantar(viagem_r, min);
+				min->esquerda = viagem_r->esquerda;
+				(viagem_r->esquerda)->pai = min;
 			}
 		}
 	}
@@ -288,20 +291,15 @@ Viagem *listar_viagens_u(Usuario *usuario){
 	return usuario->viagens;
 }
 Viagem *buscar_viagem_por_id_u(Usuario *usuario, int id){
-	if(usuario != NULL && id > 0){
-		if(usuario->viagens[0] != NULL){
-			int tam = sizeof(usuario->viagens)/sizeof(usuario->viagens[0]);
-			for(int i = 0; i<tam; i++)	{
-				int *id1, *dia, *mes, *ano, *periodo; //variaveis para usar acessa_v
-				char *cidade, *pais; //variaveis para usar acessa_v
-				acessa_v(usuario->viagens[i], id1, dia, mes, ano, cidade, pais, periodo);
-				if(*id1 == id){
-					return usuario->viagens[i];
-				}
-			}
+	Viagem *x = usuario->viagens;
+	while(x != NULL && x->id != id){
+		if(id < x->id){
+			x = x->esquerda;
+		}else{
+			x = x->direita;
 		}
 	}
-	return NULL;
+	return x;
 }
 Viagem *buscar_viagem_por_data_u(Usuario *usuario, int dia, int mes, int ano){
 	if (usuario != NULL && dia >= 1 && mes >= 1 && ano >= 1 ){
@@ -337,13 +335,82 @@ Viagem *buscar_viagem_por_destino_u(Usuario *usuario, char *cidade, char *pais){
 	return NULL;
 }
 Viagem *filtrar_viagens_amigos_por_data_u(Usuario *usuario, int dia, int mes, int ano){
+	int quantidadeViagens = 0;
+	int tam = sizeof(usuario->amigos)/sizeof(usuario->amigos[0]); //tamanho do vetor amigos
+	if (usuario !=NULL && verificar_data(dia, mes, ano)){	
+		for (int i = 0; i < tam; i++){
+			if (buscar_viagem_por_data_u(usuario->amigos[i], dia, mes, ano) != NULL){
+				quantidadeViagens++;
+			}
+		}
+	}
+	if(quantidadeViagens != 0){
+		Viagem *lista[quantidadeViagens];
+		for (int i = 0; i < tam; i++){
+			lista[i] = buscar_viagem_por_data_u(usuario->amigos[i], dia, mes, ano);
+		}
+		return lista;
+	}
+	return NULL;
 	
+
 }
 Viagem *filtrar_viagens_amigos_por_destino_u(Usuario *usuario, char *cidade, char *pais){
-
+	int quantidadeViagens = 0;
+	int tam = sizeof(usuario->amigos)/sizeof(usuario->amigos[0]); //tamanho do vetor  amigos
+	if (usuario !=NULL && verificar_destino(cidade, pais)){	
+		for (int i = 0; i < tam; i++){
+			if (buscar_viagem_por_destino_u(usuario->amigos[i], cidade, pais) != NULL){
+				quantidadeViagens++;
+			}
+		}
+	}
+	if(quantidadeViagens != 0){
+		Viagem *lista[quantidadeViagens];
+		for (int i = 0; i < tam; i++){
+			lista[i] = buscar_viagem_por_destino_u(usuario->amigos[i], cidade, pais);
+		}
+		return lista;
+	}
+	return NULL;
 }
 Usuario *filtrar_amigos_por_data_viagem_u(Usuario *usuario, int dia, int mes, int ano){
-
+	int quantidadeAmigos = 0;
+	int tam = sizeof(usuario->amigos)/sizeof(usuario->amigos[0]);
+	Usuario *vetorDeAmigos[quantidadeAmigos];
+	if(usuario != NULL && verificar_data(dia, mes, ano)){
+		int total1 = dia + mes*30 + ano*365;
+		for (int i = 0; i < tam; i++){
+			Viagem *j = (usuario->amigos[i])->viagens;
+			while(j != NULL){
+				int total2 = j->dia + j->mes*30 + j->ano*365;
+				if(total1 == total2){
+					quantidadeAmigos++;
+					j == NULL;
+				}else if(total1 < total2){
+					j = j->esquerda;
+				}else{
+					j = j->direita;
+				}
+			}
+		}
+		
+		for (int i = 0; i < tam; i++){
+			Viagem *j = (usuario->amigos[i])->viagens;
+			while(j != NULL){
+				int total2 = j->dia + j->mes*30 + j->ano*365;
+				if(total1 == total2){
+					vetorDeAmigos[i] = usuario->amigos[i];
+					j == NULL;
+				}else if(total1 < total2){
+					j = j->esquerda;
+				}else{
+					j = j->direita;
+				}
+			}
+		}
+		return vetorDeAmigos;
+	}
 }
 Usuario *filtrar_amigos_por_destino_viagem_u(Usuario *usuario, char *cidade, char *pais){
 

@@ -17,4 +17,5 @@ Viagem *acessa_raiz_v(Viagem *viagem);
 Viagem *acessa_pai_v(Viagem *viagem);
 void atribui_raiz(Viagem *viagem, Viagem *raiz);
 void transplantar(Viagem *viagem, Viagem *filho);
-Viagem *minR(Viagem* x); //retorna um ponteiro para o nó mínimo na subárvore enraizada em x
+Viagem *minR(Viagem *x); //retorna um ponteiro para o nó mínimo na subárvore enraizada em x
+Viagem *sucessor(Viagem *x); //retorna um ponteiro para o sucessor de x

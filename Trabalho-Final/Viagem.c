@@ -48,14 +48,14 @@ int verificar_periodo(int periodo){
 }
 
 
-Viagem *minR(Viagem* x){ //retorna um ponteiro para o nó mínimo na subárvore enraizada em x
+Viagem *minR(Viagem *x){ //retorna um ponteiro para o nó mínimo na subárvore enraizada em x
 	if(x->esquerda == NULL){
 		return x;
 	}
 	return minR(x->esquerda);
 }
 
-Viagem *sucessor(Viagem* x){
+Viagem *sucessor(Viagem *x){
 	if(x->direita != NULL){
 		return minR(x->direita);
 	}
@@ -106,7 +106,7 @@ Viagem *nova_v(int dia, int mes, int ano, char *cidade, char *pais, int periodo)
 }
 
 
-void libera_v(Viagem *viagem){ //falar com o Lincoln sobre à necessidade de verificar a direita e a esquerda
+void libera_v(Viagem *viagem){
     if(viagem != NULL){
         Viagem *nova_viagem;
         viagem = nova_viagem;
